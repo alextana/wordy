@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Draggable from 'react-draggable'
 import { GAME_CONFIG } from '@/config'
 import { ChevronDown, ChevronUp, GripVertical, Pause, Play } from 'lucide-react'
@@ -63,40 +63,35 @@ export function DebugPanel({
     }
   }
 
-  // Calculate position after mount and on window resize
+  // Calculate initial position
   useEffect(() => {
-    const updatePosition = () => {
+    const totalHeight = isCollapsed
+      ? HEADER_HEIGHT
+      : HEADER_HEIGHT + EXPANDED_CONTENT_HEIGHT
+    setPosition({
+      x: window.innerWidth - PANEL_WIDTH - MARGIN,
+      y: window.innerHeight - totalHeight - MARGIN,
+    })
+  }, []) // Only run once on mount
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
       const totalHeight = isCollapsed
         ? HEADER_HEIGHT
         : HEADER_HEIGHT + EXPANDED_CONTENT_HEIGHT
       const maxX = window.innerWidth - PANEL_WIDTH - MARGIN
       const maxY = window.innerHeight - totalHeight - MARGIN
 
-      setPosition({
-        x: Math.max(0, Math.min(maxX, position.x)),
-        y: Math.max(0, Math.min(maxY, position.y)),
-      })
+      setPosition((prev) => ({
+        x: Math.max(0, Math.min(maxX, prev.x)),
+        y: Math.max(0, Math.min(maxY, prev.y)),
+      }))
     }
 
-    // Initial position at bottom right
-    if (position.x === 0 && position.y === 0) {
-      const totalHeight = isCollapsed
-        ? HEADER_HEIGHT
-        : HEADER_HEIGHT + EXPANDED_CONTENT_HEIGHT
-      setPosition({
-        x: window.innerWidth - PANEL_WIDTH - MARGIN,
-        y: window.innerHeight - totalHeight - MARGIN,
-      })
-    } else {
-      updatePosition()
-    }
-
-    window.addEventListener('resize', updatePosition)
-    return () => window.removeEventListener('resize', updatePosition)
-  }, [isCollapsed, position])
-
-  // Only show in development
-  if (import.meta.env.PROD) return null
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [isCollapsed]) // Only depend on isCollapsed state
 
   return (
     <div className='fixed inset-0 pointer-events-none'>
