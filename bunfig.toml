@@ -1,0 +1,6 @@
+[install]
+# Use exact versions for dependencies
+exact = true
+
+[install.scopes]
+# Configure scope-specific settings if needed
