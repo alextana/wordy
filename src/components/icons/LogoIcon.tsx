@@ -1,6 +1,8 @@
+import { motion } from 'framer-motion'
+
 export function LogoIcon({ className }: { className?: string }) {
   return (
-    <svg
+    <motion.svg
       className={className}
       viewBox='0 0 24 24'
       fill='none'
@@ -15,6 +17,6 @@ export function LogoIcon({ className }: { className?: string }) {
       <path d='M21 15v4c0 1.1-.9 2-2 2h-4' />
       <path d='M12 3v18' />
       <path d='M3 12h18' />
-    </svg>
+    </motion.svg>
   )
 }
