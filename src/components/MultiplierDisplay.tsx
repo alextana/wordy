@@ -23,7 +23,7 @@ export function MultiplierDisplay({
             {combo}x Combo!
           </motion.div>
         )}
-        {multipliers.map((multiplier, index) => (
+        {multipliers.map((multiplier) => (
           <motion.div
             key={`${multiplier.reason}-${multiplier.expiresAt}`}
             initial={{ x: -50, opacity: 0 }}

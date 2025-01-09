@@ -100,7 +100,7 @@ export function DebugPanel({
         nodeRef={nodeRef}
         handle='.handle'
         position={position}
-        onStop={(e, data) => {
+        onStop={(_e, data) => {
           setPosition({ x: data.x, y: data.y })
         }}
         bounds='parent'

@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
-import { GAME_CONFIG, DICTIONARY } from '@/config'
+import { GAME_CONFIG } from '@/config'
 import { calculateWordScore } from '@/utils/scoring'
 import { getRandomWordLength, getRandomStartingLetter } from '@/utils/game'
+import { useDictionary } from './useDictionary'
 import type { GameState } from '@/types'
 
 let toastId = 0
 
 export function useGameState() {
-  const [gameState, setGameState] = useState<GameState>({
-    targetLength: getRandomWordLength(),
+  const dictionary = useDictionary()
+  const [gameState, setGameState] = useState<GameState>(() => ({
+    targetLength: getRandomWordLength(dictionary.wordLengths),
     timeLeft: GAME_CONFIG.ROUND_TIME,
     score: 0,
     isPlaying: false,
@@ -21,7 +23,7 @@ export function useGameState() {
     requiredLetter: 'a',
     usedWords: new Set(),
     isPaused: false,
-  })
+  }))
 
   // Debug controls
   const setDebugLength = (length: number) => {
@@ -113,7 +115,7 @@ export function useGameState() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const word = gameState.currentInput.toLowerCase()
 
@@ -141,7 +143,8 @@ export function useGameState() {
       return
     }
 
-    if (!DICTIONARY.includes(word)) {
+    const isValid = await dictionary.checkWord(word)
+    if (!isValid) {
       showToast(`"${word}" is not in the dictionary`, 'error')
       setGameState((prev) => ({ ...prev, combo: 0 }))
       return
