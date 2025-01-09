@@ -52,16 +52,18 @@ function App() {
             />
           )}
           <Toast toast={gameState.toast} />
-          <DebugPanel
-            onSetLength={setDebugLength}
-            onSetLetter={setDebugLetter}
-            onSetTime={setDebugTime}
-            onTogglePause={togglePause}
-            currentLength={gameState.targetLength}
-            currentLetter={gameState.requiredLetter}
-            currentTime={gameState.timeLeft}
-            isPaused={gameState.isPaused || false}
-          />
+          {import.meta.env.DEV && (
+            <DebugPanel
+              onSetLength={setDebugLength}
+              onSetLetter={setDebugLetter}
+              onSetTime={setDebugTime}
+              onTogglePause={togglePause}
+              currentLength={gameState.targetLength}
+              currentLetter={gameState.requiredLetter}
+              currentTime={gameState.timeLeft}
+              isPaused={gameState.isPaused || false}
+            />
+          )}
         </div>
       </div>
     </div>
