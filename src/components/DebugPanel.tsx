@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Draggable from 'react-draggable'
 import { GAME_CONFIG } from '@/config'
 import { ChevronDown, ChevronUp, GripVertical, Pause, Play } from 'lucide-react'
@@ -33,6 +33,7 @@ export function DebugPanel({
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [timeInput, setTimeInput] = useState(currentTime.toString())
   const [position, setPosition] = useState({ x: 0, y: 0 })
+  const nodeRef = useRef(null)
 
   const letters = 'abcdefghijklmnopqrstuvwxyz'.split('')
   const lengths = Array.from(
@@ -96,6 +97,7 @@ export function DebugPanel({
   return (
     <div className='fixed inset-0 pointer-events-none'>
       <Draggable
+        nodeRef={nodeRef}
         handle='.handle'
         position={position}
         onStop={(e, data) => {
@@ -103,7 +105,10 @@ export function DebugPanel({
         }}
         bounds='parent'
       >
-        <div className='pointer-events-auto bg-slate-800/90 backdrop-blur-sm rounded-lg shadow-lg border border-slate-700 w-64'>
+        <div
+          ref={nodeRef}
+          className='pointer-events-auto bg-slate-800/90 backdrop-blur-sm rounded-lg shadow-lg border border-slate-700 w-64'
+        >
           <div className='flex items-center justify-between p-2 border-b border-slate-700 handle cursor-move'>
             <div className='flex items-center gap-2'>
               <GripVertical className='w-4 h-4 text-slate-400' />
