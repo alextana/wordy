@@ -1,0 +1,35 @@
+{
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@3.0.0"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/check-word/(?<word>[^/]+)",
+      "dest": "/api/check-word/[word].ts?word=$word"
+    },
+    {
+      "src": "/api/starting-letters/(?<length>[^/]+)",
+      "dest": "/api/starting-letters/[length].ts?length=$length"
+    },
+    {
+      "src": "/api/word-lengths",
+      "dest": "/api/word-lengths.ts"
+    },
+    {
+      "src": "^/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "^/(?!api).*\\.[a-zA-Z0-9]+$",
+      "dest": "/$0"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

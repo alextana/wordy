@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3001/api'
+const API_URL = '/api'
 
 export async function checkWord(word: string): Promise<{ isValid: boolean }> {
   const response = await fetch(`${API_URL}/check-word/${word}`)

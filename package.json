@@ -3,13 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "vercel-build": "npm run build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "server": "cd server && npm run dev",
-    "start": "concurrently \"npm run dev\" \"npm run server\""
+    "preview": "vite preview"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.1",
@@ -32,6 +34,7 @@
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
+    "@vercel/node": "^5.0.2",
     "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.20",
     "concurrently": "^8.2.2",
