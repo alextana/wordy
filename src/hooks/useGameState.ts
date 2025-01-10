@@ -28,7 +28,7 @@ export function useGameState() {
   // Debug controls
   const setDebugLength = (length: number) => {
     if (import.meta.env.PROD) return
-    setGameState((prev) => ({
+    setGameState((prev: GameState) => ({
       ...prev,
       targetLength: length,
       currentInput: prev.requiredLetter,
@@ -37,7 +37,7 @@ export function useGameState() {
 
   const setDebugLetter = (letter: string) => {
     if (import.meta.env.PROD) return
-    setGameState((prev) => ({
+    setGameState((prev: GameState) => ({
       ...prev,
       requiredLetter: letter.toLowerCase(),
       currentInput: letter.toLowerCase(),
@@ -46,7 +46,7 @@ export function useGameState() {
 
   const setDebugTime = (seconds: number) => {
     if (import.meta.env.PROD) return
-    setGameState((prev) => ({
+    setGameState((prev: GameState) => ({
       ...prev,
       timeLeft: Math.max(0, Math.min(999, seconds)),
     }))
@@ -54,7 +54,7 @@ export function useGameState() {
 
   const togglePause = () => {
     if (import.meta.env.PROD) return
-    setGameState((prev) => ({
+    setGameState((prev: GameState) => ({
       ...prev,
       isPaused: !prev.isPaused,
     }))
