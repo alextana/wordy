@@ -40,7 +40,6 @@ const LENGTH_MULTIPLIERS: { [key: number]: number } = {
 
 // Extra multiplier for starting with rare letters
 const RARE_START_MULTIPLIERS: { [key: string]: number } = {
-  x: 1.5,
   z: 1.5,
   j: 1.4,
   q: 1.6,
