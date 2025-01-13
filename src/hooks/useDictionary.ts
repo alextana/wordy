@@ -1,14 +1,24 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueries } from '@tanstack/react-query'
 import { checkWord, getStartingLetters, getWordLengths } from '@/lib/api'
 
 const DEFAULT_LENGTHS = [3, 4, 5, 6]
 const DEFAULT_LETTERS = 'abcdefghijklmnopqrstuvwxyz'.split('')
 
 export function useDictionary() {
+  // Cache word lengths indefinitely
   const { data: wordLengths, isLoading: isLoadingLengths } = useQuery({
     queryKey: ['word-lengths'],
     queryFn: getWordLengths,
     staleTime: Infinity,
+  })
+
+  // Pre-fetch and cache starting letters for all available lengths
+  const startingLettersQueries = useQueries({
+    queries: (wordLengths?.lengths || DEFAULT_LENGTHS).map((length) => ({
+      queryKey: ['starting-letters', length],
+      queryFn: () => getStartingLetters(length),
+      staleTime: Infinity,
+    })),
   })
 
   const checkWordQuery = async (word: string) => {
@@ -22,18 +32,21 @@ export function useDictionary() {
   }
 
   const getStartingLettersQuery = async (length: number) => {
-    try {
-      const { letters } = await getStartingLetters(length)
-      return letters
-    } catch (error) {
-      console.error('Error getting starting letters:', error)
-      return DEFAULT_LETTERS
-    }
+    // Get from cache based on array index matching the length index
+    const lengthIndex = (wordLengths?.lengths || DEFAULT_LENGTHS).indexOf(
+      length
+    )
+    if (lengthIndex === -1) return DEFAULT_LETTERS
+
+    return startingLettersQueries[lengthIndex]?.data?.letters || DEFAULT_LETTERS
   }
+
+  const isLoading =
+    isLoadingLengths || startingLettersQueries.some((q) => q.isLoading)
 
   return {
     wordLengths: wordLengths?.lengths || DEFAULT_LENGTHS,
-    isLoading: isLoadingLengths,
+    isLoading,
     checkWord: checkWordQuery,
     getStartingLetters: getStartingLettersQuery,
   }

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { GAME_CONFIG } from '@/config'
 import { calculateWordScore } from '@/utils/scoring'
-import { getRandomWordLength, getRandomStartingLetter } from '@/utils/game'
 import { useDictionary } from './useDictionary'
 import type { GameState } from '@/types'
 
@@ -10,7 +9,7 @@ let toastId = 0
 export function useGameState() {
   const dictionary = useDictionary()
   const [gameState, setGameState] = useState<GameState>(() => ({
-    targetLength: getRandomWordLength(dictionary.wordLengths),
+    targetLength: GAME_CONFIG.MIN_LETTERS,
     timeLeft: GAME_CONFIG.ROUND_TIME,
     score: 0,
     isPlaying: false,
@@ -20,10 +19,31 @@ export function useGameState() {
     activeMultipliers: [],
     combo: 0,
     wordCount: 0,
-    requiredLetter: 'a',
+    requiredLetter: '',
     usedWords: new Set(),
     isPaused: false,
   }))
+
+  // Get new word parameters from API
+  const getNewWordParameters = async () => {
+    try {
+      // Get random length from available lengths
+      const length =
+        dictionary.wordLengths[
+          Math.floor(Math.random() * dictionary.wordLengths.length)
+        ]
+      // Get starting letters for this length
+      const letters = await dictionary.getStartingLetters(length)
+      // Get random letter from available starting letters
+      const letter = letters[Math.floor(Math.random() * letters.length)]
+
+      return { length, letter }
+    } catch (error) {
+      console.error('Error getting word parameters:', error)
+      // Fallback to minimum length and 'a' if API fails
+      return { length: GAME_CONFIG.MIN_LETTERS, letter: 'a' }
+    }
+  }
 
   // Debug controls
   const setDebugLength = (length: number) => {
@@ -157,8 +177,9 @@ export function useGameState() {
     )
     const now = Date.now()
 
-    const newLength = getRandomWordLength()
-    const newLetter = getRandomStartingLetter(newLength)
+    // Get new word parameters from API
+    const { length: newLength, letter: newLetter } =
+      await getNewWordParameters()
 
     setGameState((prev) => ({
       ...prev,
@@ -183,9 +204,10 @@ export function useGameState() {
     }))
   }
 
-  const startNewRound = () => {
-    const newLength = getRandomWordLength()
-    const newLetter = getRandomStartingLetter(newLength)
+  const startNewRound = async () => {
+    // Get initial word parameters from API
+    const { length: newLength, letter: newLetter } =
+      await getNewWordParameters()
 
     setGameState((prev) => ({
       ...prev,
@@ -199,9 +221,10 @@ export function useGameState() {
     }))
   }
 
-  const restartGame = () => {
-    const newLength = getRandomWordLength()
-    const newLetter = getRandomStartingLetter(newLength)
+  const restartGame = async () => {
+    // Get initial word parameters from API
+    const { length: newLength, letter: newLetter } =
+      await getNewWordParameters()
 
     setGameState({
       targetLength: newLength,

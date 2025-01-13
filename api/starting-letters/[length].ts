@@ -8,11 +8,11 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Length parameter must be a string' })
   }
 
-  const wordLength = parseInt(length)
-  if (isNaN(wordLength)) {
+  const lengthNum = parseInt(length, 10)
+  if (isNaN(lengthNum)) {
     return res.status(400).json({ error: 'Length must be a valid number' })
   }
 
-  const letters = getStartingLetters(wordLength)
+  const letters = getStartingLetters(lengthNum)
   res.json({ letters })
 }

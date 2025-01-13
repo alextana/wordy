@@ -18,8 +18,8 @@ export function GameBoard({
   onStartRound,
 }: GameBoardProps) {
   return (
-    <div className='flex-1 grid place-content-center'>
-      <Card className='w-[600px] bg-slate-900/50 border-slate-800 backdrop-blur-sm'>
+    <div className='flex-1 grid place-content-center p-4 md:p-0'>
+      <Card className='w-[min(600px,100%)] bg-slate-900/50 border-slate-800 backdrop-blur-sm'>
         <CardContent className='pt-8 pb-8 space-y-8'>
           {!gameState.isPlaying ? (
             <motion.div
@@ -27,10 +27,10 @@ export function GameBoard({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <h2 className='text-4xl font-bold text-center bg-gradient-to-r from-emerald-400 to-cyan-400 text-transparent bg-clip-text'>
+              <h2 className='text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-emerald-400 to-cyan-400 text-transparent bg-clip-text'>
                 Word Game
               </h2>
-              <p className='text-slate-300 text-center text-lg'>
+              <p className='text-slate-300 text-center text-base md:text-lg'>
                 Create words using the letters provided. <br />
                 Longer words score more points!
               </p>
@@ -41,7 +41,7 @@ export function GameBoard({
               >
                 <Button
                   onClick={onStartRound}
-                  className='w-full text-lg h-12 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white shadow-lg shadow-emerald-500/20'
+                  className='w-full text-base md:text-lg h-10 md:h-12 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white shadow-lg shadow-emerald-500/20'
                   size='lg'
                 >
                   Start Game
@@ -51,7 +51,7 @@ export function GameBoard({
           ) : (
             <>
               <motion.h2
-                className='text-4xl font-bold text-center space-y-2'
+                className='text-3xl md:text-4xl font-bold text-center space-y-2'
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 key={gameState.round}
@@ -59,7 +59,7 @@ export function GameBoard({
                 <div className='bg-gradient-to-r from-emerald-400 to-cyan-400 text-transparent bg-clip-text'>
                   Make a {gameState.targetLength}-letter word
                 </div>
-                <div className='text-2xl text-slate-300'>
+                <div className='text-xl md:text-2xl text-slate-300'>
                   starting with{' '}
                   <span className='text-emerald-400 font-bold'>
                     {gameState.requiredLetter.toUpperCase()}
@@ -90,7 +90,7 @@ export function GameBoard({
                 >
                   <Button
                     type='submit'
-                    className='w-full text-lg h-12 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white shadow-lg shadow-emerald-500/20'
+                    className='w-full text-base md:text-lg h-10 md:h-12 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white shadow-lg shadow-emerald-500/20'
                   >
                     Submit Word
                   </Button>

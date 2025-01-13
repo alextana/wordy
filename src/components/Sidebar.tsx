@@ -8,7 +8,7 @@ interface SidebarProps {
 
 export function Sidebar({ timeLeft, round }: SidebarProps) {
   return (
-    <aside className='w-64 border-r border-slate-800 p-4 bg-slate-900/50'>
+    <aside className='w-64 md:h-full border-r border-slate-800 p-4 bg-slate-900/50'>
       <Card className='bg-slate-900/50 border-slate-800'>
         <CardHeader>
           <CardTitle className='bg-gradient-to-r from-emerald-400 to-cyan-400 text-transparent bg-clip-text'>

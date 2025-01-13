@@ -26,9 +26,9 @@ export function GameOverScreen({
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className='flex-1 grid place-content-center p-8'
+      className='flex-1 grid place-content-center p-4 md:p-8'
     >
-      <Card className='w-[600px] bg-slate-900/50 border-slate-800 backdrop-blur-sm'>
+      <Card className='w-[min(600px,100%)] bg-slate-900/50 border-slate-800 backdrop-blur-sm'>
         <CardContent className='pt-8 pb-8'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -36,20 +36,20 @@ export function GameOverScreen({
             transition={{ delay: 0.2 }}
             className='space-y-8'
           >
-            <h2 className='text-4xl font-bold text-center bg-gradient-to-r from-emerald-400 to-cyan-400 text-transparent bg-clip-text'>
+            <h2 className='text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-emerald-400 to-cyan-400 text-transparent bg-clip-text'>
               Game Over!
             </h2>
 
             <div className='grid grid-cols-2 gap-4 p-6'>
               <div className='space-y-2'>
                 <div className='text-sm text-slate-400'>Final Score</div>
-                <div className='text-4xl font-bold text-emerald-400'>
+                <div className='text-3xl md:text-4xl font-bold text-emerald-400'>
                   {score}
                 </div>
               </div>
               <div className='space-y-2'>
                 <div className='text-sm text-slate-400'>Words Found</div>
-                <div className='text-4xl font-bold text-cyan-400'>
+                <div className='text-3xl md:text-4xl font-bold text-cyan-400'>
                   {wordCount}
                 </div>
               </div>
@@ -97,7 +97,7 @@ export function GameOverScreen({
 
             <Button
               onClick={onRestart}
-              className='w-full text-lg h-12 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white shadow-lg shadow-emerald-500/20'
+              className='w-full text-base md:text-lg h-10 md:h-12 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white shadow-lg shadow-emerald-500/20'
             >
               Play Again
             </Button>
